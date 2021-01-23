@@ -43,4 +43,8 @@ public class TestTemplate {
         questionTemplates.addAll(questionTemplateSet);
     }
 
+    public void removeQuestionTemplate(QuestionTemplate questionTemplate) {
+        questionTemplates.remove(questionTemplate);
+    }
+
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/test-template")
+@RequestMapping("/api/test-templates")
 class TestTemplateController {
     private final TestTemplateService testTemplateService;
     private final TestTemplateMapper testTemplateMapper;

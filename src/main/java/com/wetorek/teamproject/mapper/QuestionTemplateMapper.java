@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,12 @@ public class QuestionTemplateMapper {
         var questionResponse = modelMapper.map(entity, QuestionTemplateDtoResponse.class);
         questionResponse.setOptionTemplateDto(mapOptionEntitySetToResponses(entity.getOptions()));
         return questionResponse;
+    }
+
+    public List<QuestionTemplateDtoResponse> mapListOfEntityToResponses(List<QuestionTemplate> questionTemplates) {
+        return questionTemplates.stream()
+                .map(this::mapEntityToResponse)
+                .collect(Collectors.toList());
     }
 
     private Set<OptionTemplate> mapOptionDtoRequestSetToEntity(Set<OptionTemplateDtoRequest> requests) {
