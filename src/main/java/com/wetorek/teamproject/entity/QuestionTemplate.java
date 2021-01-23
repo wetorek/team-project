@@ -44,4 +44,8 @@ public class QuestionTemplate {
         options.forEach(optionTemplate -> optionTemplate.setQuestionTemplate(this));
     }
 
+    public void removeOptionTemplate(OptionTemplate optionTemplate) {
+        options.remove(optionTemplate);
+    }
+
 }

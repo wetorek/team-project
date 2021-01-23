@@ -64,6 +64,7 @@ class QuestionTemplateController {
         questionTemplateService.deleteQuestionTemplate(questionId);
     }
 
+    //todo implement iterator pattern here
     public QuestionTemplateDtoResponse getNextQuestion() {
         return null;
     }
