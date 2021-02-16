@@ -77,7 +77,7 @@ public class TestFactory {
     }
 
     private Option from(OptionTemplate optionTemplate, Question question) {
-        var option =  Option.builder()
+        var option = Option.builder()
                 .answerText(optionTemplate.getAnswerText())
                 .question(question)
                 .optionTemplate(optionTemplate)

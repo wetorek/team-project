@@ -16,7 +16,7 @@ public class QuestionMapper {
     private final ModelMapper modelMapper;
     private final OptionMapper optionMapper;
 
-    QuestionDtoResponse mapToDto (Question question){
+    QuestionDtoResponse mapToDto(Question question) {
         var response = modelMapper.map(question, QuestionDtoResponse.class);
         response.setTestId(question.getTest().getId());
         var mappedOptions = optionMapper.mapSetToDto(question.getOptions());
@@ -24,7 +24,7 @@ public class QuestionMapper {
         return response;
     }
 
-    List<QuestionDtoResponse> mapSetToDto (Set<Question> questionSet){
+    List<QuestionDtoResponse> mapSetToDto(Set<Question> questionSet) {
         return questionSet.stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());

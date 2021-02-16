@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "questions")
@@ -31,7 +30,7 @@ public class Question {
     @JoinColumn(name = "question_template_id")
     private QuestionTemplate questionTemplate;
 
-    public void addOptions (Set<Option> options){
+    public void addOptions(Set<Option> options) {
         this.options.addAll(options);
     }
 }

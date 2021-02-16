@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class TestController {
     }
 
     @PutMapping("/{id}")
-    TestDtoResponse submitTest(@PathVariable int id, @RequestBody TestDtoRequest testDtoRequest) {
+    TestDtoResponse submitTest(@PathVariable int id, @RequestBody @Valid TestDtoRequest testDtoRequest) {
         var test = testService.submitTest(id, testDtoRequest);
         return testMapper.mapToResponse(test);
     }

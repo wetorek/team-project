@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,18 +41,19 @@ class OptionTemplateController {
      * Will be used rarely- we mostly would post entire test templates
      * */
     @PostMapping
-    OptionTemplateDtoResponse postOptionTemplate(@RequestParam Integer questionId, @RequestBody OptionTemplateDtoRequest request) {
+    OptionTemplateDtoResponse postOptionTemplate(@RequestParam Integer questionId, @RequestBody @Valid OptionTemplateDtoRequest request) {
         var optionTemplate = optionTemplateService.createNewOptionTemplate(questionId, request);
         return optionTemplateMapper.mapEntityToResponse(optionTemplate);
     }
 
     @PutMapping("/{optionId}")
-    OptionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer optionId, @RequestParam Integer newQuestionId, @RequestBody OptionTemplateDtoRequest request) {
+    OptionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer optionId, @RequestParam Integer newQuestionId, @RequestBody @Valid OptionTemplateDtoRequest request) {
         var optionTemplate = optionTemplateService.updateOptionTemplate(optionId, newQuestionId, request);
         return optionTemplateMapper.mapEntityToResponse(optionTemplate);
     }
 
     @DeleteMapping("/{optionId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteQuestionTemplate(@PathVariable Integer optionId) {
         optionTemplateService.deleteOptionTemplate(optionId);
     }

@@ -39,7 +39,7 @@ public class QuestionTemplate {
         options.forEach(optionTemplate -> optionTemplate.setQuestionTemplate(this));
     }
 
-    public void addQuestion (Question question){
+    public void addQuestion(Question question) {
         questions.add(question);
     }
 

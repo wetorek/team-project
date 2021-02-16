@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ class TestTemplateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<TestTemplateDtoResponse> create(@RequestBody TestTemplateDtoRequest request) {
+    ResponseEntity<TestTemplateDtoResponse> create(@RequestBody @Valid TestTemplateDtoRequest request) {
         var createdTest = testTemplateService.createTestTemplate(request);
         return ResponseEntity.created(URI.create("/" + createdTest.getId())).body(testTemplateMapper.mapEntityToResponse(createdTest));
     }
@@ -47,7 +48,7 @@ class TestTemplateController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    TestTemplateDtoResponse update(@PathVariable Integer id, @RequestBody TestTemplateDtoRequest request) {
+    TestTemplateDtoResponse update(@PathVariable Integer id, @RequestBody @Valid TestTemplateDtoRequest request) {
         var testTemplate = testTemplateService.updateOrCreate(id, request);
         return testTemplateMapper.mapEntityToResponse(testTemplate);
     }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,18 +41,19 @@ class QuestionTemplateController {
      * */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    QuestionTemplateDtoResponse postQuestionTemplate(@RequestParam Integer testId, @RequestBody QuestionTemplateDtoRequest request) {
+    QuestionTemplateDtoResponse postQuestionTemplate(@RequestParam Integer testId, @RequestBody @Valid QuestionTemplateDtoRequest request) {
         var questionTemplate = questionTemplateService.createNewQuestionTemplate(testId, request);
         return questionTemplateMapper.mapEntityToResponse(questionTemplate);
     }
 
     @PutMapping("/{questionId}")
-    QuestionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer questionId, @RequestParam Integer newTestId, @RequestBody QuestionTemplateDtoRequest request) {
+    QuestionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer questionId, @RequestParam Integer newTestId, @RequestBody @Valid QuestionTemplateDtoRequest request) {
         var questionTemplate = questionTemplateService.updateQuestionTemplate(questionId, newTestId, request);
         return questionTemplateMapper.mapEntityToResponse(questionTemplate);
     }
 
     @DeleteMapping("/{questionId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteQuestionTemplate(@PathVariable Integer questionId) {
         questionTemplateService.deleteQuestionTemplate(questionId);
     }
