@@ -9,18 +9,20 @@ import java.util.UUID;
 @Table(name = "options")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Option {
-    @EqualsAndHashCode.Include
-    private final UUID uuid = UUID.randomUUID();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String answerText;
     private boolean marked;
     @ManyToOne
-    @JoinColumn(name = "option_id")
+    @JoinColumn(name = "question_id")
     private Question question;
+
+    @ManyToOne
+    @JoinColumn(name = "option_template_id")
+    private OptionTemplate optionTemplate;
 }

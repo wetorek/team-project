@@ -13,12 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 public class Question {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.EAGER)
     private final Set<Option> options = new HashSet<>();
-    @EqualsAndHashCode.Include
-    private final UUID uuid = UUID.randomUUID();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,4 +26,12 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "test_id")
     private Test test;
+
+    @ManyToOne
+    @JoinColumn(name = "question_template_id")
+    private QuestionTemplate questionTemplate;
+
+    public void addOptions (Set<Option> options){
+        this.options.addAll(options);
+    }
 }

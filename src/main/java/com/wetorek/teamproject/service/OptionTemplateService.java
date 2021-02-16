@@ -17,7 +17,7 @@ import java.util.Optional;
 public class OptionTemplateService {
     private final OptionTemplateFactory optionTemplateFactory;
     private final OptionTemplateRepository optionTemplateRepository;
-    private final TestService testService;
+    private final TestCheckerService testCheckerService;
     private final QuestionTemplateService questionTemplateService;
 
     public Optional<OptionTemplate> getOptionTemplateById(final Integer optionId) {
@@ -39,7 +39,7 @@ public class OptionTemplateService {
         var optionTemplate = getOptionTemplateById(optionId).orElseThrow(() -> new IllegalStateException("Option template doesn't exist"));
         var questionTemplate = optionTemplate.getQuestionTemplate();
         var testTemplate = questionTemplate.getTestTemplate();
-        if (testService.existNotCheckedTest(testTemplate)) {
+        if (testCheckerService.existNotCheckedTest(testTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests");
         }
         questionTemplate.removeOptionTemplate(optionTemplate);
@@ -52,7 +52,7 @@ public class OptionTemplateService {
         var currentTestTemplate = currentOptionTemplate.getQuestionTemplate().getTestTemplate();
         var newQuestionTemplate = questionTemplateService.getQuestionTemplateById(newQuestionId).orElseThrow(() -> new IllegalStateException("Question template doesn't exist"));
         var newTestTemplate = newQuestionTemplate.getTestTemplate();
-        if (testService.existNotCheckedTest(currentTestTemplate) || testService.existNotCheckedTest(newTestTemplate)) {
+        if (testCheckerService.existNotCheckedTest(currentTestTemplate) || testCheckerService.existNotCheckedTest(newTestTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests");
         }
         return updateOption(currentOptionTemplate, currentQuestionTemplate, newQuestionTemplate, request);

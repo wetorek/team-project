@@ -3,8 +3,9 @@ package com.wetorek.teamproject.dto;
 import lombok.Data;
 
 @Data
-public class OptionTemplateDtoResponse {
+public class OptionDtoResponse {
     private int id;
     private String answerText;
-    private boolean correct;
+    private boolean marked;
+    private int questionId;
 }

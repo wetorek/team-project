@@ -20,7 +20,7 @@ public class QuestionTemplateService {
     private final QuestionTemplateFactory questionTemplateFactory;
     private final TestTemplateService testTemplateService;
     private final QuestionTemplateRepository questionTemplateRepository;
-    private final TestService testService;
+    private final TestCheckerService testCheckerService;
 
     public Optional<QuestionTemplate> getQuestionTemplateById(int id) {
         return questionTemplateRepository.findById(id);
@@ -49,7 +49,7 @@ public class QuestionTemplateService {
     public void deleteQuestionTemplate(int questionTemplateId) {
         var questionTemplate = getQuestionTemplateById(questionTemplateId).orElseThrow(() -> new QuestionTemplateNotFound("Question not found: " + questionTemplateId));
         var test = questionTemplate.getTestTemplate();
-        if (testService.existNotCheckedTest(test)) {
+        if (testCheckerService.existNotCheckedTest(test)) {
             throw new IllegalStateException("This test template has unchecked tests");
         }
         test.removeQuestionTemplate(questionTemplate);
@@ -58,7 +58,7 @@ public class QuestionTemplateService {
 
     private QuestionTemplate moveQuestionTemplateToOtherTest(final Integer newTestId, TestTemplate testTemplate, final QuestionTemplate questionTemplate, final QuestionTemplateDtoRequest request) {
         var newTestTemplate = testTemplateService.getById(newTestId).orElseThrow(() -> new QuestionTemplateNotFound("Test template not found: " + newTestId));
-        if (testService.existNotCheckedTest(testTemplate) || testService.existNotCheckedTest(newTestTemplate)) {
+        if (testCheckerService.existNotCheckedTest(testTemplate) || testCheckerService.existNotCheckedTest(newTestTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests");
         }
         testTemplate.removeQuestionTemplate(questionTemplate);
@@ -68,7 +68,7 @@ public class QuestionTemplateService {
     }
 
     private QuestionTemplate modifyInCurrentTestTemplate(final TestTemplate testTemplate, final QuestionTemplate questionTemplate, final QuestionTemplateDtoRequest request) {
-        if (testService.existNotCheckedTest(testTemplate)) {
+        if (testCheckerService.existNotCheckedTest(testTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests: " + testTemplate.getId());
         }
         testTemplate.removeQuestionTemplate(questionTemplate);

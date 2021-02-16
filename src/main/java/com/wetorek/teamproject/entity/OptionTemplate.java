@@ -1,9 +1,12 @@
 package com.wetorek.teamproject.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.Set;
 
 
 @Entity
@@ -12,10 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class OptionTemplate {
-    @EqualsAndHashCode.Include
-    private final UUID uuid = UUID.randomUUID();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,5 +25,10 @@ public class OptionTemplate {
     @JoinColumn(name = "question_template_id")
     private QuestionTemplate questionTemplate;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "optionTemplate", fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Option> options;
 
+    public void addOption(Option option) {
+        options.add(option);
+    }
 }

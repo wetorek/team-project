@@ -39,6 +39,7 @@ class QuestionTemplateController {
      * Will be used rarely- we mostly would post entire test templates
      * */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     QuestionTemplateDtoResponse postQuestionTemplate(@RequestParam Integer testId, @RequestBody QuestionTemplateDtoRequest request) {
         var questionTemplate = questionTemplateService.createNewQuestionTemplate(testId, request);
         return questionTemplateMapper.mapEntityToResponse(questionTemplate);

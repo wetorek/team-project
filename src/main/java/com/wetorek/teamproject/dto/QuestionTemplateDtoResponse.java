@@ -1,20 +1,15 @@
 package com.wetorek.teamproject.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class QuestionTemplateDtoResponse {
     private int id;
     private String question;
     private int maxPoints;
     private int correctAnswers;
+    private int allAnswers;
     private Set<OptionTemplateDtoResponse> optionTemplateDto;
 }

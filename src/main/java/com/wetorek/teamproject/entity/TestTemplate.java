@@ -1,12 +1,14 @@
 package com.wetorek.teamproject.entity;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "test_templates")
@@ -14,10 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TestTemplate {
-    @EqualsAndHashCode.Include
-    private final UUID uuid = UUID.randomUUID();
     @Id
     @GeneratedValue
     private int id;
@@ -25,6 +24,9 @@ public class TestTemplate {
     private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "testTemplate", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<QuestionTemplate> questionTemplates = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testTemplate", fetch = FetchType.LAZY)
+    private Set<Test> tests = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

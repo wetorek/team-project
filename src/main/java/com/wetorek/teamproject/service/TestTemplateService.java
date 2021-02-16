@@ -17,7 +17,7 @@ import java.util.Optional;
 public class TestTemplateService {
     private final TestTemplateRepository testTemplateRepository;
     private final TestTemplateFactory testTemplateFactory;
-    private final TestService testService;
+    private final TestCheckerService testCheckerService;
 
     public TestTemplate createTestTemplate(final TestTemplateDtoRequest testTemplateDtoRequest) {
         var test = testTemplateFactory.from(testTemplateDtoRequest);
@@ -40,7 +40,7 @@ public class TestTemplateService {
             test.setId(id);
         }
         var test = testTemplateRepository.getOne(id);
-        if (testService.existNotCheckedTest(test)) {
+        if (testCheckerService.existNotCheckedTest(test)) {
             throw new IllegalStateException("This test template has unchecked tests: " + id);
         }
         var updatedTest = updateTestTemplate(test, request);
