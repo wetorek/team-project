@@ -17,6 +17,8 @@ public class Option {
     private int id;
     private String answerText;
     private boolean marked;
+    @Enumerated(EnumType.STRING)
+    private OptionStatus status;
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

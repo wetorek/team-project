@@ -44,6 +44,7 @@ public class TestTemplateService {
             throw new IllegalStateException("This test template has unchecked tests: " + id);
         }
         var updatedTest = updateTestTemplate(test, request);
+        updatedTest.setId(test.getId());
         return testTemplateRepository.save(updatedTest);
     }
 

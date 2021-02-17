@@ -19,6 +19,7 @@ public class TestDtoResponse {
     private boolean submitted;
     private int examinedUserId;
     private int testTemplateId;
+    private int points;
     @NotEmpty
     private List<QuestionDtoResponse> questionDtoResponseList;
 }

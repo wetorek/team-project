@@ -9,10 +9,14 @@ import com.wetorek.teamproject.entity.User;
 import com.wetorek.teamproject.exceptions.TemplateNotFound;
 import com.wetorek.teamproject.exceptions.TestNotFoundException;
 import com.wetorek.teamproject.repository.TestRepository;
+import com.wetorek.teamproject.service.pipeline.Subscriber;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +28,12 @@ public class TestService {
     private final TestRepository testRepository;
     private final TestFactory testFactory;
     private final TestTemplateService testTemplateService;
+    private final List<Subscriber> subscribers = new ArrayList<>();
+
+    @Autowired
+    void configureObservers(Subscriber... subscriberParams) {
+        subscribers.addAll(Arrays.asList(subscriberParams));
+    }
 
     public Test createTest(int assignedUserId, int testTemplateId) {
         var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(TemplateNotFound::new);
@@ -50,7 +60,13 @@ public class TestService {
         }
         markAnswers(test, testDtoRequest);
         test.setSubmitted(true);
+        notifySubscribers(test);
+        testRepository.save(test);
         return test;
+    }
+
+    private void notifySubscribers(Test test) {
+        subscribers.forEach(subscriber -> subscriber.update(test));
     }
 
     private void markAnswers(Test test, TestDtoRequest testDtoRequest) {
@@ -62,5 +78,9 @@ public class TestService {
                 .map(Question::getOptions)
                 .flatMap(Collection::stream)
                 .forEach(option -> option.setMarked(responses.get(option.getId())));
+    }
+
+    public Test getTestById(int id) {
+        return testRepository.findById(id).orElseThrow(TestNotFoundException::new);
     }
 }

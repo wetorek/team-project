@@ -1,5 +1,6 @@
 package com.wetorek.teamproject.dto;
 
+import com.wetorek.teamproject.entity.OptionStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -12,5 +13,5 @@ public class OptionDtoResponse {
     @NotBlank
     private String answerText;
     private boolean marked;
-    private int questionId;
+    private OptionStatus optionStatus;
 }

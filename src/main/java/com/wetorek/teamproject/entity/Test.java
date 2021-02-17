@@ -23,6 +23,7 @@ public class Test {
     private String description;
     private boolean checked;
     private boolean submitted;
+    private int points;
     @ManyToOne
     @JoinColumn(name = "user_examined_id")
     private User examinedUser;

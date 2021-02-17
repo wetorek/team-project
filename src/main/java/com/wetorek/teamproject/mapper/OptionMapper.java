@@ -16,9 +16,7 @@ public class OptionMapper {
     private final ModelMapper mapper;
 
     public OptionDtoResponse mapToDto(Option option) {
-        var response = mapper.map(option, OptionDtoResponse.class);
-        response.setQuestionId(option.getQuestion().getId());
-        return response;
+        return mapper.map(option, OptionDtoResponse.class);
     }
 
     public List<OptionDtoResponse> mapSetToDto(Set<Option> optionSet) {
