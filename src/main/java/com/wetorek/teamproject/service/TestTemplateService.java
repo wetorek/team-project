@@ -2,7 +2,7 @@ package com.wetorek.teamproject.service;
 
 import com.wetorek.teamproject.dto.TestTemplateDtoRequest;
 import com.wetorek.teamproject.entity.TestTemplate;
-import com.wetorek.teamproject.exceptions.TemplateNotFound;
+import com.wetorek.teamproject.exceptions.TemplateNotFoundEx;
 import com.wetorek.teamproject.repository.TestTemplateRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class TestTemplateService {
 
     public void delete(Integer id) {
         if (!testTemplateRepository.existsById(id)) {
-            throw new TemplateNotFound();
+            throw new TemplateNotFoundEx("Test template not exists");
         }
         testTemplateRepository.deleteById(id);
     }

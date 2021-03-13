@@ -6,8 +6,8 @@ import com.wetorek.teamproject.dto.TestDtoRequest;
 import com.wetorek.teamproject.entity.Question;
 import com.wetorek.teamproject.entity.Test;
 import com.wetorek.teamproject.entity.User;
-import com.wetorek.teamproject.exceptions.TemplateNotFound;
-import com.wetorek.teamproject.exceptions.TestNotFoundException;
+import com.wetorek.teamproject.exceptions.TemplateNotFoundEx;
+import com.wetorek.teamproject.exceptions.TestNotFoundEx;
 import com.wetorek.teamproject.repository.TestRepository;
 import com.wetorek.teamproject.service.pipeline.Subscriber;
 import lombok.AllArgsConstructor;
@@ -36,7 +36,7 @@ public class TestService {
     }
 
     public Test createTest(int assignedUserId, int testTemplateId) {
-        var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(TemplateNotFound::new);
+        var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(TemplateNotFoundEx::new);
         //TODO user change
         User assignedUser = null;
         var test = testFactory.from(testTemplate, assignedUser);
@@ -54,7 +54,7 @@ public class TestService {
     }
 
     public Test submitTest(int id, TestDtoRequest testDtoRequest) {
-        var test = testRepository.findById(id).orElseThrow(TestNotFoundException::new);
+        var test = testRepository.findById(id).orElseThrow(TestNotFoundEx::new);
         if (test.isSubmitted()) {
             throw new IllegalStateException();
         }
@@ -81,6 +81,6 @@ public class TestService {
     }
 
     public Test getTestById(int id) {
-        return testRepository.findById(id).orElseThrow(TestNotFoundException::new);
+        return testRepository.findById(id).orElseThrow(TestNotFoundEx::new);
     }
 }

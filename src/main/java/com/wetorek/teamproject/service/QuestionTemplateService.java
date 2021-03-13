@@ -3,7 +3,7 @@ package com.wetorek.teamproject.service;
 import com.wetorek.teamproject.dto.QuestionTemplateDtoRequest;
 import com.wetorek.teamproject.entity.QuestionTemplate;
 import com.wetorek.teamproject.entity.TestTemplate;
-import com.wetorek.teamproject.exceptions.QuestionTemplateNotFound;
+import com.wetorek.teamproject.exceptions.QuestionTemplateNotFoundEx;
 import com.wetorek.teamproject.repository.QuestionTemplateRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class QuestionTemplateService {
     }
 
     public QuestionTemplate updateQuestionTemplate(int questionId, int newTestId, QuestionTemplateDtoRequest request) {
-        var questionTemplate = questionTemplateRepository.findById(questionId).orElseThrow(() -> new QuestionTemplateNotFound("Question not found: " + questionId));
+        var questionTemplate = questionTemplateRepository.findById(questionId).orElseThrow(() -> new QuestionTemplateNotFoundEx("Question not found: " + questionId));
         if (questionTemplate.getTestTemplate().getId() == newTestId) {
             return modifyInCurrentTestTemplate(questionTemplate.getTestTemplate(), questionTemplate, request);
         } else {
@@ -47,7 +47,7 @@ public class QuestionTemplateService {
     }
 
     public void deleteQuestionTemplate(int questionTemplateId) {
-        var questionTemplate = getQuestionTemplateById(questionTemplateId).orElseThrow(() -> new QuestionTemplateNotFound("Question not found: " + questionTemplateId));
+        var questionTemplate = getQuestionTemplateById(questionTemplateId).orElseThrow(() -> new QuestionTemplateNotFoundEx("Question not found: " + questionTemplateId));
         var test = questionTemplate.getTestTemplate();
         if (testCheckerService.existNotCheckedTest(test)) {
             throw new IllegalStateException("This test template has unchecked tests");
@@ -57,7 +57,7 @@ public class QuestionTemplateService {
     }
 
     private QuestionTemplate moveQuestionTemplateToOtherTest(final Integer newTestId, TestTemplate testTemplate, final QuestionTemplate questionTemplate, final QuestionTemplateDtoRequest request) {
-        var newTestTemplate = testTemplateService.getById(newTestId).orElseThrow(() -> new QuestionTemplateNotFound("Test template not found: " + newTestId));
+        var newTestTemplate = testTemplateService.getById(newTestId).orElseThrow(() -> new QuestionTemplateNotFoundEx("Test template not found: " + newTestId));
         if (testCheckerService.existNotCheckedTest(testTemplate) || testCheckerService.existNotCheckedTest(newTestTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests");
         }

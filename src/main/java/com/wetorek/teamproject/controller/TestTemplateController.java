@@ -2,7 +2,6 @@ package com.wetorek.teamproject.controller;
 
 import com.wetorek.teamproject.dto.TestTemplateDtoRequest;
 import com.wetorek.teamproject.dto.TestTemplateDtoResponse;
-import com.wetorek.teamproject.exceptions.TemplateNotFound;
 import com.wetorek.teamproject.mapper.TestTemplateMapper;
 import com.wetorek.teamproject.service.TestTemplateService;
 import lombok.AllArgsConstructor;
@@ -57,15 +56,5 @@ class TestTemplateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable Integer id) {
         testTemplateService.delete(id);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleClientError(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(TemplateNotFound.class)
-    ResponseEntity<String> handleClientError(TemplateNotFound ex) {
-        return ResponseEntity.notFound().build();
     }
 }

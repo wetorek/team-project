@@ -2,7 +2,6 @@ package com.wetorek.teamproject.controller;
 
 import com.wetorek.teamproject.dto.QuestionTemplateDtoRequest;
 import com.wetorek.teamproject.dto.QuestionTemplateDtoResponse;
-import com.wetorek.teamproject.exceptions.QuestionTemplateNotFound;
 import com.wetorek.teamproject.mapper.QuestionTemplateMapper;
 import com.wetorek.teamproject.service.QuestionTemplateService;
 import lombok.AllArgsConstructor;
@@ -61,15 +60,5 @@ class QuestionTemplateController {
     //todo implement iterator pattern here
     public QuestionTemplateDtoResponse getNextQuestion() {
         return null;
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleClientError(IllegalStateException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(QuestionTemplateNotFound.class)
-    ResponseEntity<String> handleClientError(QuestionTemplateNotFound e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

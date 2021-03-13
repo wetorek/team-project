@@ -2,7 +2,6 @@ package com.wetorek.teamproject.controller;
 
 import com.wetorek.teamproject.dto.OptionTemplateDtoRequest;
 import com.wetorek.teamproject.dto.OptionTemplateDtoResponse;
-import com.wetorek.teamproject.exceptions.QuestionTemplateNotFound;
 import com.wetorek.teamproject.mapper.OptionTemplateMapper;
 import com.wetorek.teamproject.service.OptionTemplateService;
 import lombok.AllArgsConstructor;
@@ -56,16 +55,6 @@ class OptionTemplateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteQuestionTemplate(@PathVariable Integer optionId) {
         optionTemplateService.deleteOptionTemplate(optionId);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleClientError(IllegalStateException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(QuestionTemplateNotFound.class)
-    ResponseEntity<String> handleClientError(QuestionTemplateNotFound e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }
