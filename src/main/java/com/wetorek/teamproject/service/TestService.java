@@ -6,29 +6,30 @@ import com.wetorek.teamproject.dto.TestDtoRequest;
 import com.wetorek.teamproject.entity.Question;
 import com.wetorek.teamproject.entity.Test;
 import com.wetorek.teamproject.entity.User;
-import com.wetorek.teamproject.exceptions.TemplateNotFoundEx;
 import com.wetorek.teamproject.repository.TestRepository;
 import com.wetorek.teamproject.service.pipeline.Subscriber;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class TestService {
     private final TestRepository testRepository;
     private final TestFactory testFactory;
     private final TestTemplateService testTemplateService;
-    private final List<Subscriber> subscribers = new ArrayList<>();
+    private final List<Subscriber> subscribers;
 
-    @Autowired
-    void configureObservers(Subscriber... subscriberParams) {
-        subscribers.addAll(Arrays.asList(subscriberParams));
+    public TestService(TestRepository testRepository, TestFactory testFactory, TestTemplateService testTemplateService, Subscriber... subscribers) {
+        this.testRepository = testRepository;
+        this.testFactory = testFactory;
+        this.testTemplateService = testTemplateService;
+        this.subscribers = Arrays.asList(subscribers);
     }
 
     public Test createTest(int assignedUserId, int testTemplateId) {
@@ -52,7 +53,7 @@ public class TestService {
     public Test submitTest(int id, TestDtoRequest testDtoRequest) {
         var test = testRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Test not found"));
         if (test.isSubmitted()) {
-            throw new IllegalStateException("This test is already submited");
+            throw new IllegalStateException("This test is already submitted");
         }
         markAnswers(test, testDtoRequest);
         test.setSubmitted(true);
