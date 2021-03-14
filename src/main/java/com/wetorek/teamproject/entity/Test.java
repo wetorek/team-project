@@ -4,17 +4,15 @@ import lombok.*;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "tests")
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 public class Test {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "test", fetch = FetchType.EAGER)
-    private final Set<Question> questions = new HashSet<>();
+    private Set<Question> questions;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,18 +23,14 @@ public class Test {
     private int points;
     @ManyToOne
     @JoinColumn(name = "user_examined_id")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private User examinedUser;
     @ManyToOne
     @JoinColumn(name = "test_template_id")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private TestTemplate testTemplate;
 
     @PersistenceConstructor
     public Test() {
     }
-
-    public void addQuestions(Set<Question> questions) {
-        this.questions.addAll(questions);
-    }
-
-
 }

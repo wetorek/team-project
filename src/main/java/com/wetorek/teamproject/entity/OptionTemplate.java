@@ -1,8 +1,9 @@
 package com.wetorek.teamproject.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
@@ -11,8 +12,7 @@ import java.util.Set;
 
 @Entity(name = "option_templates")
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class OptionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,8 @@ public class OptionTemplate {
     private boolean correct;
     @ManyToOne
     @JoinColumn(name = "question_template_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private QuestionTemplate questionTemplate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "optionTemplate", fetch = FetchType.EAGER, orphanRemoval = true)

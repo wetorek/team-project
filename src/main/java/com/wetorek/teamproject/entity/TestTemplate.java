@@ -2,18 +2,17 @@ package com.wetorek.teamproject.entity;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "test_templates")
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class TestTemplate {
     @Id
     @GeneratedValue
@@ -21,13 +20,17 @@ public class TestTemplate {
     private String title;
     private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "testTemplate", fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<QuestionTemplate> questionTemplates = new HashSet<>();
+    private Set<QuestionTemplate> questionTemplates;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testTemplate", fetch = FetchType.LAZY)
-    private Set<Test> tests = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testTemplate")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Test> tests;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @PersistenceConstructor

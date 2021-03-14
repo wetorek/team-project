@@ -23,7 +23,7 @@ public class TestFactory {
                 .testTemplate(testTemplate)
                 .build();
         var questions = createQuestions(testTemplate, test);
-        test.addQuestions(questions);
+        test.setQuestions(questions);
         return test;
     }
 
@@ -41,7 +41,7 @@ public class TestFactory {
                 .questionTemplate(questionTemplate)
                 .build();
         questionTemplate.addQuestion(question);
-        question.addOptions(createOptions(questionTemplate, question));
+        question.setOptions(createOptions(questionTemplate, question));
         return question;
     }
 
