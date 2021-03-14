@@ -3,17 +3,15 @@ package com.wetorek.teamproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "test_templates")
+@Entity(name = "test_templates")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class TestTemplate {
@@ -31,6 +29,10 @@ public class TestTemplate {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PersistenceConstructor
+    public TestTemplate() {
+    }
 
     public void clearAndAddAll(Set<QuestionTemplate> questionTemplateSet) {
         questionTemplates.clear();

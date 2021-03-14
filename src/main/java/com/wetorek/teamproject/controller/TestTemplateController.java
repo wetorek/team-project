@@ -27,14 +27,6 @@ class TestTemplateController {
         return testTemplateMapper.mapListOfEntitiesToResponses(testTemplates);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<TestTemplateDtoResponse> create(@RequestBody @Valid TestTemplateDtoRequest request) {
-        var createdTest = testTemplateService.createTestTemplate(request);
-        return ResponseEntity.created(URI.create("/" + createdTest.getId())).body(testTemplateMapper.mapEntityToResponse(createdTest));
-    }
-
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<TestTemplateDtoResponse> getById(@PathVariable Integer id) {
@@ -43,6 +35,13 @@ class TestTemplateController {
                 .map(testTemplateMapper::mapEntityToResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<TestTemplateDtoResponse> create(@RequestBody @Valid TestTemplateDtoRequest request) {
+        var createdTest = testTemplateService.createTestTemplate(request);
+        return ResponseEntity.created(URI.create("/" + createdTest.getId())).body(testTemplateMapper.mapEntityToResponse(createdTest));
     }
 
     @PutMapping("/{id}")

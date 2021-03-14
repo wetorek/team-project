@@ -29,14 +29,14 @@ public class OptionTemplateService {
     }
 
     public OptionTemplate createNewOptionTemplate(final Integer questionId, final OptionTemplateDtoRequest request) {
-        var questionTemplate = questionTemplateService.getQuestionTemplateById(questionId).orElseThrow(() -> new IllegalStateException("Question template doesn't exist"));
+        var questionTemplate = questionTemplateService.getQuestionTemplateById(questionId).orElseThrow(() -> new IllegalArgumentException("Question template doesn't exist"));
         var optionTemplate = optionTemplateFactory.from(questionTemplate, request);
         log.info("New option template created: ");
         return optionTemplateRepository.save(optionTemplate);
     }
 
     public void deleteOptionTemplate(final Integer optionId) {
-        var optionTemplate = getOptionTemplateById(optionId).orElseThrow(() -> new IllegalStateException("Option template doesn't exist"));
+        var optionTemplate = getOptionTemplateById(optionId).orElseThrow(() -> new IllegalArgumentException("Option template doesn't exist"));
         var questionTemplate = optionTemplate.getQuestionTemplate();
         var testTemplate = questionTemplate.getTestTemplate();
         if (testCheckerService.existNotCheckedTest(testTemplate)) {
@@ -47,10 +47,10 @@ public class OptionTemplateService {
     }
 
     public OptionTemplate updateOptionTemplate(final Integer optionId, final Integer newQuestionId, final OptionTemplateDtoRequest request) {
-        var currentOptionTemplate = getOptionTemplateById(optionId).orElseThrow(() -> new IllegalStateException("Option template doesn't exist"));
+        var currentOptionTemplate = getOptionTemplateById(optionId).orElseThrow(() -> new IllegalArgumentException("Option template doesn't exist"));
         var currentQuestionTemplate = currentOptionTemplate.getQuestionTemplate();
         var currentTestTemplate = currentOptionTemplate.getQuestionTemplate().getTestTemplate();
-        var newQuestionTemplate = questionTemplateService.getQuestionTemplateById(newQuestionId).orElseThrow(() -> new IllegalStateException("Question template doesn't exist"));
+        var newQuestionTemplate = questionTemplateService.getQuestionTemplateById(newQuestionId).orElseThrow(() -> new IllegalArgumentException("Question template doesn't exist"));
         var newTestTemplate = newQuestionTemplate.getTestTemplate();
         if (testCheckerService.existNotCheckedTest(currentTestTemplate) || testCheckerService.existNotCheckedTest(newTestTemplate)) {
             throw new IllegalStateException("This test template has unchecked tests");

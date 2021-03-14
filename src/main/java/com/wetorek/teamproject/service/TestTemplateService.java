@@ -35,17 +35,20 @@ public class TestTemplateService {
     }
 
     public TestTemplate updateOrCreate(Integer id, final TestTemplateDtoRequest request) {
-        if (!testTemplateRepository.existsById(id)) {
-            var test = createTestTemplate(request);
-            test.setId(id);
-        }
-        var test = testTemplateRepository.getOne(id);
-        if (testCheckerService.existNotCheckedTest(test)) {
-            throw new IllegalStateException("This test template has unchecked tests: " + id);
-        }
-        var updatedTest = updateTestTemplate(test, request);
-        updatedTest.setId(test.getId());
-        return testTemplateRepository.save(updatedTest);
+        var template = testTemplateRepository.findById(id)
+                .map(testTemplate -> {
+                    if (testCheckerService.existNotCheckedTest(testTemplate)) {
+                        throw new IllegalStateException("This test template has unchecked tests: " + id);
+                    }
+                    return updateTestTemplate(testTemplate, request);
+                })
+                .orElseGet(() -> {
+                    var test = createTestTemplate(request);
+                    test.setId(id);
+                    return test;
+                });
+        template.setId(id);
+        return testTemplateRepository.save(template);
     }
 
     public void delete(Integer id) {

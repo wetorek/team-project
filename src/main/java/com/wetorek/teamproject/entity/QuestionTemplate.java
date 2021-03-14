@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "question_templates")
+@Entity(name = "question_templates")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class QuestionTemplate {
@@ -33,6 +32,9 @@ public class QuestionTemplate {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionTemplate", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Question> questions = new HashSet<>();
 
+    @PersistenceConstructor
+    public QuestionTemplate() {
+    }
 
     public void attachParentEntities(TestTemplate testTemplate) {
         this.testTemplate = testTemplate;

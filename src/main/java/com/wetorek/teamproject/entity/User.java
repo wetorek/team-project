@@ -2,17 +2,15 @@ package com.wetorek.teamproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -31,4 +29,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "examinedUser", fetch = FetchType.EAGER)
     private Set<Test> tests = new HashSet<>();
 
+    @PersistenceConstructor
+    public User() {
+    }
 }

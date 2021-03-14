@@ -2,17 +2,15 @@ package com.wetorek.teamproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
 
-@Entity
-@Table(name = "option_templates")
+@Entity(name = "option_templates")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class OptionTemplate {
@@ -27,6 +25,10 @@ public class OptionTemplate {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "optionTemplate", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Option> options;
+
+    @PersistenceConstructor
+    public OptionTemplate() {
+    }
 
     public void addOption(Option option) {
         options.add(option);

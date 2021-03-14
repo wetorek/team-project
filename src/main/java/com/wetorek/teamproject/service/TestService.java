@@ -7,7 +7,6 @@ import com.wetorek.teamproject.entity.Question;
 import com.wetorek.teamproject.entity.Test;
 import com.wetorek.teamproject.entity.User;
 import com.wetorek.teamproject.exceptions.TemplateNotFoundEx;
-import com.wetorek.teamproject.exceptions.TestNotFoundEx;
 import com.wetorek.teamproject.repository.TestRepository;
 import com.wetorek.teamproject.service.pipeline.Subscriber;
 import lombok.AllArgsConstructor;
@@ -15,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +32,7 @@ public class TestService {
     }
 
     public Test createTest(int assignedUserId, int testTemplateId) {
-        var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(TemplateNotFoundEx::new);
+        var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(() -> new IllegalArgumentException("Test template not found"));
         //TODO user change
         User assignedUser = null;
         var test = testFactory.from(testTemplate, assignedUser);
@@ -54,9 +50,9 @@ public class TestService {
     }
 
     public Test submitTest(int id, TestDtoRequest testDtoRequest) {
-        var test = testRepository.findById(id).orElseThrow(TestNotFoundEx::new);
+        var test = testRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Test not found"));
         if (test.isSubmitted()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("This test is already submited");
         }
         markAnswers(test, testDtoRequest);
         test.setSubmitted(true);
@@ -80,7 +76,7 @@ public class TestService {
                 .forEach(option -> option.setMarked(responses.get(option.getId())));
     }
 
-    public Test getTestById(int id) {
-        return testRepository.findById(id).orElseThrow(TestNotFoundEx::new);
+    public Optional<Test> getTestById(int id) {
+        return testRepository.findById(id);
     }
 }

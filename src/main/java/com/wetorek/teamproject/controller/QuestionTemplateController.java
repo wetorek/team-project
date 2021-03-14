@@ -19,7 +19,6 @@ class QuestionTemplateController {
     private final QuestionTemplateMapper questionTemplateMapper;
     private final QuestionTemplateService questionTemplateService;
 
-
     @GetMapping("/{questionId}")
     ResponseEntity<QuestionTemplateDtoResponse> getQuestionTemplateById(@PathVariable Integer questionId) {
         var questionTemplate = questionTemplateService.getQuestionTemplateById(questionId);

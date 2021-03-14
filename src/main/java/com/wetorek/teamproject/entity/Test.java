@@ -1,15 +1,14 @@
 package com.wetorek.teamproject.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "tests")
+@Entity(name = "tests")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -30,6 +29,10 @@ public class Test {
     @ManyToOne
     @JoinColumn(name = "test_template_id")
     private TestTemplate testTemplate;
+
+    @PersistenceConstructor
+    public Test() {
+    }
 
     public void addQuestions(Set<Question> questions) {
         this.questions.addAll(questions);

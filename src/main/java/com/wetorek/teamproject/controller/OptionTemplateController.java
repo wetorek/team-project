@@ -16,10 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/option-templates")
 class OptionTemplateController {
-
     private final OptionTemplateService optionTemplateService;
     private final OptionTemplateMapper optionTemplateMapper;
-
 
     @GetMapping("/{optionId}")
     ResponseEntity<OptionTemplateDtoResponse> getOptionTemplateById(@PathVariable Integer optionId) {
