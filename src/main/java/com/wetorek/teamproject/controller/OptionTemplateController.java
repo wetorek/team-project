@@ -17,13 +17,13 @@ import java.util.List;
 @RequestMapping("/api/option-templates")
 class OptionTemplateController {
     private final OptionTemplateService optionTemplateService;
-    private final OptionTemplateMapper optionTemplateMapper;
+    private final OptionTemplateMapper mapper;
 
     @GetMapping("/{optionId}")
     ResponseEntity<OptionTemplateDtoResponse> getOptionTemplateById(@PathVariable Integer optionId) {
         var optionTemplate = optionTemplateService.getOptionTemplateById(optionId);
         return optionTemplate
-                .map(optionTemplateMapper::mapEntityToResponse)
+                .map(mapper::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -31,7 +31,7 @@ class OptionTemplateController {
     @GetMapping
     List<OptionTemplateDtoResponse> getOptionTemplatesByQuestionId(@RequestParam Integer questionId) {
         var optionTemplates = optionTemplateService.getOptionTemplatesByQuestionId(questionId);
-        return optionTemplateMapper.mapListOfEntityToDto(optionTemplates);
+        return mapper.mapCollectionToDto(optionTemplates);
     }
 
     /*
@@ -40,13 +40,13 @@ class OptionTemplateController {
     @PostMapping
     OptionTemplateDtoResponse postOptionTemplate(@RequestParam Integer questionId, @RequestBody @Valid OptionTemplateDtoRequest request) {
         var optionTemplate = optionTemplateService.createNewOptionTemplate(questionId, request);
-        return optionTemplateMapper.mapEntityToResponse(optionTemplate);
+        return mapper.mapToDto(optionTemplate);
     }
 
     @PutMapping("/{optionId}")
     OptionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer optionId, @RequestParam Integer newQuestionId, @RequestBody @Valid OptionTemplateDtoRequest request) {
         var optionTemplate = optionTemplateService.updateOptionTemplate(optionId, newQuestionId, request);
-        return optionTemplateMapper.mapEntityToResponse(optionTemplate);
+        return mapper.mapToDto(optionTemplate);
     }
 
     @DeleteMapping("/{optionId}")

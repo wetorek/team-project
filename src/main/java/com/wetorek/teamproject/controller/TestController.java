@@ -25,14 +25,14 @@ public class TestController {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<TestDtoResponse> createTestForUser(@RequestParam int userId, @RequestParam int templateId) {
         var test = testService.createTest(userId, templateId);
-        var testDto = testMapper.mapToResponse(test);
+        var testDto = testMapper.mapToDto(test);
         return ResponseEntity.created(URI.create("/" + testDto.getId())).body(testDto);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<TestDtoResponse> getTestById(@PathVariable int id) {
         var test = testService.getTestById(id);
-        return test.map(testMapper::mapToResponse)
+        return test.map(testMapper::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -41,7 +41,7 @@ public class TestController {
     List<TestDtoResponse> getTestsByTemplate(@RequestParam("templateId") int templateId) {
         var tests = testService.getAllTestsByTemplate(templateId);
         return tests.stream()
-                .map(testMapper::mapToResponse)
+                .map(testMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -49,13 +49,13 @@ public class TestController {
     List<TestDtoResponse> getTestsByUser(@RequestParam("userId") int userId) {
         var tests = testService.getAllTestsByUser(userId);
         return tests.stream()
-                .map(testMapper::mapToResponse)
+                .map(testMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")
     TestDtoResponse submitTest(@PathVariable int id, @RequestBody @Valid TestDtoRequest testDtoRequest) {
         var test = testService.submitTest(id, testDtoRequest);
-        return testMapper.mapToResponse(test);
+        return testMapper.mapToDto(test);
     }
 }

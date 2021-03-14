@@ -25,6 +25,7 @@ public class RestExceptionAdvice {
                 .errorMessage(ex.getMessage())
                 .build();
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     ErrorResponse handleConflict(IllegalArgumentException ex) {

@@ -1,52 +1,35 @@
 package com.wetorek.teamproject.mapper;
 
-import com.wetorek.teamproject.dto.OptionTemplateDtoRequest;
-import com.wetorek.teamproject.dto.OptionTemplateDtoResponse;
 import com.wetorek.teamproject.dto.QuestionTemplateDtoRequest;
 import com.wetorek.teamproject.dto.QuestionTemplateDtoResponse;
-import com.wetorek.teamproject.entity.OptionTemplate;
 import com.wetorek.teamproject.entity.QuestionTemplate;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
-public class QuestionTemplateMapper {
-    private final ModelMapper modelMapper;
-    private final OptionTemplateMapper optionTemplateMapper;
+@Mapper(componentModel = "spring", uses = {OptionTemplateMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface QuestionTemplateMapper {
 
-    public QuestionTemplate mapRequestToEntity(QuestionTemplateDtoRequest request) {
-        var questionTemplate = modelMapper.map(request, QuestionTemplate.class);
-        questionTemplate.setOptions(mapOptionDtoRequestSetToEntity(request.getOptionTemplateDto()));
-        return questionTemplate;
-    }
+    @Mappings({
+            @Mapping(target = "optionTemplateDtoResponses", source = "options")
+    })
+    QuestionTemplateDtoResponse mapToDto(QuestionTemplate questionTemplate);
 
-    public QuestionTemplateDtoResponse mapEntityToResponse(QuestionTemplate entity) {
-        var questionResponse = modelMapper.map(entity, QuestionTemplateDtoResponse.class);
-        questionResponse.setOptionTemplateDto(mapOptionEntitySetToResponses(entity.getOptions()));
-        return questionResponse;
-    }
+    List<QuestionTemplateDtoResponse> mapCollectionToDto(Collection<QuestionTemplate> questionTemplate);
 
-    public List<QuestionTemplateDtoResponse> mapListOfEntityToResponses(List<QuestionTemplate> questionTemplates) {
-        return questionTemplates.stream()
-                .map(this::mapEntityToResponse)
-                .collect(Collectors.toList());
-    }
 
-    private Set<OptionTemplate> mapOptionDtoRequestSetToEntity(Set<OptionTemplateDtoRequest> requests) {
-        return requests.stream()
-                .map(optionTemplateMapper::mapRequestToEntity)
-                .collect(Collectors.toSet());
-    }
+    @Mappings({
+//        @Mapping(target = "options", source = "optionTemplateDto")
+    })
+    Set<QuestionTemplate> mapQuestionDtoRequestSetToEntity(Collection<QuestionTemplateDtoRequest> requests);
 
-    private Set<OptionTemplateDtoResponse> mapOptionEntitySetToResponses(Set<OptionTemplate> optionTemplateSet) {
-        return optionTemplateSet.stream()
-                .map(optionTemplateMapper::mapEntityToResponse)
-                .collect(Collectors.toSet());
-    }
+    @Mappings({
+            @Mapping(target = "options", source = "optionTemplateDto")
+    })
+    QuestionTemplate mapRequestToEntity(QuestionTemplateDtoRequest questionTemplateDtoRequest);
 }

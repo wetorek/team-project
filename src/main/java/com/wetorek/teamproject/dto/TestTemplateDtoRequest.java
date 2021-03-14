@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class TestTemplateDtoRequest {
@@ -15,5 +15,5 @@ public class TestTemplateDtoRequest {
     @NotBlank
     private String description;
     @NotEmpty
-    private Set<QuestionTemplateDtoRequest> questionTemplateDto;
+    private List<QuestionTemplateDtoRequest> questionTemplateDto;
 }

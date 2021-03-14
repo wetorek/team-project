@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class TestTemplateFactory {
-    private final TestTemplateMapper testTemplateMapper;
-
+    private final TestTemplateMapper templateMapper;
 
     public TestTemplate from(final TestTemplateDtoRequest request) {
-        var testTemplate = testTemplateMapper.mapRequestToEntity(request);
+//        var testTemplate = testTemplateMapper.mapRequestToEntity(request);
+        var testTemplate = templateMapper.mapRequestToEntity(request);
         //changes here associated with user
         return testTemplate;
     }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class QuestionTemplateDtoResponse {
@@ -16,5 +16,5 @@ public class QuestionTemplateDtoResponse {
     private int correctAnswers;
     private int allAnswers;
     @NotEmpty
-    private Set<OptionTemplateDtoResponse> optionTemplateDto;
+    private List<OptionTemplateDtoResponse> optionTemplateDtoResponses;
 }

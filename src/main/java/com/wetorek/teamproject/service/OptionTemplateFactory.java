@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 class OptionTemplateFactory {
-    private final OptionTemplateMapper optionTemplateMapper;
+    private final OptionTemplateMapper templateMapper;
 
     public OptionTemplate from(QuestionTemplate questionTemplate, OptionTemplateDtoRequest request) {
-        var optionTemplate = optionTemplateMapper.mapRequestToEntity(request);
+        var optionTemplate = templateMapper.mapRequestToEntity(request);
         optionTemplate.setQuestionTemplate(questionTemplate);
         return optionTemplate;
     }

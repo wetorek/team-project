@@ -2,24 +2,19 @@ package com.wetorek.teamproject.mapper;
 
 import com.wetorek.teamproject.dto.TestDtoResponse;
 import com.wetorek.teamproject.entity.Test;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-@Service
-@AllArgsConstructor
-public class TestMapper {
-    private final ModelMapper modelMapper;
-    private final QuestionMapper questionMapper;
+@Mapper(componentModel = "spring", uses = {QuestionMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface TestMapper {
 
-    public TestDtoResponse mapToResponse(Test test) {
-        var response = modelMapper.map(test, TestDtoResponse.class);
-        //TODO change this
-//        response.setExaminedUserId(test.getExaminedUser().getId());
-        response.setExaminedUserId(test.getId());
-        response.setTestTemplateId(test.getTestTemplate().getId());
-        var mappedQuestions = questionMapper.mapSetToDto(test.getQuestions());
-        response.setQuestionDtoResponseList(mappedQuestions);
-        return response;
-    }
+    @Mappings({
+            @Mapping(target = "examinedUserId", source = "examinedUser.id", defaultValue = "12"),
+            @Mapping(target = "testTemplateId", source = "testTemplate.id", defaultValue = "12"),
+            @Mapping(target = "questionDtoResponseList", source = "questions")
+    })
+    TestDtoResponse mapToDto(Test test);
+
 }

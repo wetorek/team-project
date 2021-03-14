@@ -18,13 +18,13 @@ import java.util.List;
 @RequestMapping("/api/test-templates")
 class TestTemplateController {
     private final TestTemplateService testTemplateService;
-    private final TestTemplateMapper testTemplateMapper;
+    private final TestTemplateMapper mapstructTestTemplateMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     List<TestTemplateDtoResponse> getAll() {
         var testTemplates = testTemplateService.getAll();
-        return testTemplateMapper.mapListOfEntitiesToResponses(testTemplates);
+        return mapstructTestTemplateMapper.mapCollectionToDto(testTemplates);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +32,7 @@ class TestTemplateController {
     ResponseEntity<TestTemplateDtoResponse> getById(@PathVariable Integer id) {
         var testTemplate = testTemplateService.getById(id);
         return testTemplate
-                .map(testTemplateMapper::mapEntityToResponse)
+                .map(mapstructTestTemplateMapper::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -41,14 +41,14 @@ class TestTemplateController {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<TestTemplateDtoResponse> create(@RequestBody @Valid TestTemplateDtoRequest request) {
         var createdTest = testTemplateService.createTestTemplate(request);
-        return ResponseEntity.created(URI.create("/" + createdTest.getId())).body(testTemplateMapper.mapEntityToResponse(createdTest));
+        return ResponseEntity.created(URI.create("/" + createdTest.getId())).body(mapstructTestTemplateMapper.mapToDto(createdTest));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     TestTemplateDtoResponse update(@PathVariable Integer id, @RequestBody @Valid TestTemplateDtoRequest request) {
         var testTemplate = testTemplateService.updateOrCreate(id, request);
-        return testTemplateMapper.mapEntityToResponse(testTemplate);
+        return mapstructTestTemplateMapper.mapToDto(testTemplate);
     }
 
     @DeleteMapping("/{id}")

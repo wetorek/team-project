@@ -19,12 +19,14 @@ public class Option {
     private OptionStatus status;
     @ManyToOne
     @JoinColumn(name = "question_id")
-    @EqualsAndHashCode.Exclude @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Question question;
 
     @ManyToOne
     @JoinColumn(name = "option_template_id")
-    @EqualsAndHashCode.Exclude @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private OptionTemplate optionTemplate;
 
     @PersistenceConstructor

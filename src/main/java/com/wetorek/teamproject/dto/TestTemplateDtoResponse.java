@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class TestTemplateDtoResponse {
@@ -19,5 +19,5 @@ public class TestTemplateDtoResponse {
     @NotBlank
     private String creator;
     @NotEmpty
-    private Set<QuestionTemplateDtoResponse> questionTemplateDto;
+    private List<QuestionTemplateDtoResponse> questionTemplateDtoResponses;
 }

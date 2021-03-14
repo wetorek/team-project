@@ -23,11 +23,13 @@ public class Test {
     private int points;
     @ManyToOne
     @JoinColumn(name = "user_examined_id")
-    @EqualsAndHashCode.Exclude @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User examinedUser;
     @ManyToOne
     @JoinColumn(name = "test_template_id")
-    @EqualsAndHashCode.Exclude @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private TestTemplate testTemplate;
 
     @PersistenceConstructor

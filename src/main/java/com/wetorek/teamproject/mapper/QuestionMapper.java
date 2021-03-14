@@ -2,31 +2,23 @@ package com.wetorek.teamproject.mapper;
 
 import com.wetorek.teamproject.dto.QuestionDtoResponse;
 import com.wetorek.teamproject.entity.Question;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
-public class QuestionMapper {
-    private final ModelMapper modelMapper;
-    private final OptionMapper optionMapper;
+@Mapper(componentModel = "spring", uses = {OptionMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface QuestionMapper {
+    @Mappings({
+            @Mapping(target = "options", source = "options"),
+            @Mapping(target = "testId", source = "test.id")
+    })
+    QuestionDtoResponse mapToDto(Question question);
 
-    QuestionDtoResponse mapToDto(Question question) {
-        var response = modelMapper.map(question, QuestionDtoResponse.class);
-        response.setTestId(question.getTest().getId());
-        var mappedOptions = optionMapper.mapSetToDto(question.getOptions());
-        response.setOptions(mappedOptions);
-        return response;
-    }
 
-    List<QuestionDtoResponse> mapSetToDto(Set<Question> questionSet) {
-        return questionSet.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
+    @Mappings({})
+    List<QuestionDtoResponse> mapCollectionToDto(Collection<Question> questionSet);
 }

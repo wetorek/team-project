@@ -1,32 +1,25 @@
 package com.wetorek.teamproject.mapper;
 
-
 import com.wetorek.teamproject.dto.OptionTemplateDtoRequest;
 import com.wetorek.teamproject.dto.OptionTemplateDtoResponse;
 import com.wetorek.teamproject.entity.OptionTemplate;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mappings;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-@Service
-@AllArgsConstructor
-public class OptionTemplateMapper {
-    private final ModelMapper modelMapper;
+@Mapper(componentModel = "spring")
+public interface OptionTemplateMapper {
 
-    public OptionTemplate mapRequestToEntity(OptionTemplateDtoRequest request) {
-        return modelMapper.map(request, OptionTemplate.class);
-    }
+    @Mappings({})
+    OptionTemplateDtoResponse mapToDto(OptionTemplate optionTemplate);
 
-    public OptionTemplateDtoResponse mapEntityToResponse(OptionTemplate entity) {
-        return modelMapper.map(entity, OptionTemplateDtoResponse.class);
-    }
+    List<OptionTemplateDtoResponse> mapCollectionToDto(Collection<OptionTemplate> optionTemplates);
 
-    public List<OptionTemplateDtoResponse> mapListOfEntityToDto(List<OptionTemplate> optionTemplateList) {
-        return optionTemplateList.stream()
-                .map(this::mapEntityToResponse)
-                .collect(Collectors.toList());
-    }
+    OptionTemplate mapRequestToEntity(OptionTemplateDtoRequest optionTemplateDtoRequest);
+
+    @Mappings({})
+    Set<OptionTemplate> mapRequestsToEntities(Collection<OptionTemplateDtoRequest> optionTemplateDtoRequests);
 }

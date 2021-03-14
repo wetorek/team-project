@@ -2,26 +2,21 @@ package com.wetorek.teamproject.mapper;
 
 import com.wetorek.teamproject.dto.OptionDtoResponse;
 import com.wetorek.teamproject.entity.Option;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-@AllArgsConstructor
-@Service
-public class OptionMapper {
-    private final ModelMapper mapper;
+@Mapper(componentModel = "spring")
+public interface OptionMapper {
 
-    public OptionDtoResponse mapToDto(Option option) {
-        return mapper.map(option, OptionDtoResponse.class);
-    }
+    @Mappings({
+            @Mapping(target = "optionStatus", source = "status")
+    })
+    OptionDtoResponse mapToDto(Option option);
 
-    public List<OptionDtoResponse> mapSetToDto(Set<Option> optionSet) {
-        return optionSet.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
+    @Mappings({})
+    List<OptionDtoResponse> mapCollectionToDto(Collection<Option> optionSet);
 }

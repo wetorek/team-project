@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 class QuestionTemplateFactory {
-    private final QuestionTemplateMapper questionTemplateMapper;
-    private final TestTemplateService testTemplateService;
+    private final QuestionTemplateMapper templateMapper;
 
     QuestionTemplate from(TestTemplate testTemplate, QuestionTemplateDtoRequest request) {
-        var questionTemplate = questionTemplateMapper.mapRequestToEntity(request);
+        var questionTemplate = templateMapper.mapRequestToEntity(request);
         questionTemplate.attachParentEntities(testTemplate);
         return questionTemplate;
     }

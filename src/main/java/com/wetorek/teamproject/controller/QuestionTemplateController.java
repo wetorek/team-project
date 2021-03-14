@@ -16,14 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/question-templates")
 class QuestionTemplateController {
-    private final QuestionTemplateMapper questionTemplateMapper;
+    private final QuestionTemplateMapper mapper;
     private final QuestionTemplateService questionTemplateService;
 
     @GetMapping("/{questionId}")
     ResponseEntity<QuestionTemplateDtoResponse> getQuestionTemplateById(@PathVariable Integer questionId) {
         var questionTemplate = questionTemplateService.getQuestionTemplateById(questionId);
         return questionTemplate
-                .map(questionTemplateMapper::mapEntityToResponse)
+                .map(mapper::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -31,7 +31,7 @@ class QuestionTemplateController {
     @GetMapping
     List<QuestionTemplateDtoResponse> getQuestionTemplatesByTestId(@RequestParam Integer testId) {
         var questionTemplates = questionTemplateService.getQuestionTemplatesByTestId(testId);
-        return questionTemplateMapper.mapListOfEntityToResponses(questionTemplates);
+        return mapper.mapCollectionToDto(questionTemplates);
     }
 
     /*
@@ -41,13 +41,13 @@ class QuestionTemplateController {
     @ResponseStatus(HttpStatus.CREATED)
     QuestionTemplateDtoResponse postQuestionTemplate(@RequestParam Integer testId, @RequestBody @Valid QuestionTemplateDtoRequest request) {
         var questionTemplate = questionTemplateService.createNewQuestionTemplate(testId, request);
-        return questionTemplateMapper.mapEntityToResponse(questionTemplate);
+        return mapper.mapToDto(questionTemplate);
     }
 
     @PutMapping("/{questionId}")
     QuestionTemplateDtoResponse replaceQuestionTemplate(@PathVariable Integer questionId, @RequestParam Integer newTestId, @RequestBody @Valid QuestionTemplateDtoRequest request) {
         var questionTemplate = questionTemplateService.updateQuestionTemplate(questionId, newTestId, request);
-        return questionTemplateMapper.mapEntityToResponse(questionTemplate);
+        return mapper.mapToDto(questionTemplate);
     }
 
     @DeleteMapping("/{questionId}")
