@@ -52,6 +52,9 @@ public class TestService {
 
     public Test submitTest(int id, TestDtoRequest testDtoRequest) {
         var test = testRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Test not found"));
+        if (test.getExaminedUser().getId() != testDtoRequest.getUserId()){
+            throw new IllegalArgumentException("User id do not match");
+        }
         if (test.isSubmitted()) {
             throw new IllegalStateException("This test is already submitted");
         }

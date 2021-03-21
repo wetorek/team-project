@@ -7,6 +7,8 @@ import com.wetorek.teamproject.service.TestService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +24,7 @@ public class TestController {
     private final TestMapper testMapper;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<TestDtoResponse> createTestForUser(@RequestParam int userId, @RequestParam int templateId) {
         var test = testService.createTest(userId, templateId);
@@ -30,6 +33,7 @@ public class TestController {
     }
 
     @GetMapping("/{id}")
+    @PostAuthorize("(returnObject.statusCode.value() == 404) OR (returnObject.body.examinedUserId == authentication.principal.userId) OR hasAuthority('ROLE_ADMIN')")
     ResponseEntity<TestDtoResponse> getTestById(@PathVariable int id) {
         var test = testService.getTestById(id);
         return test.map(testMapper::mapToDto)
@@ -38,6 +42,7 @@ public class TestController {
     }
 
     @GetMapping(params = "templateId")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     List<TestDtoResponse> getTestsByTemplate(@RequestParam("templateId") int templateId) {
         var tests = testService.getAllTestsByTemplate(templateId);
         return tests.stream()
@@ -46,7 +51,8 @@ public class TestController {
     }
 
     @GetMapping(params = "userId")
-    List<TestDtoResponse> getTestsByUser(@RequestParam("userId") int userId) {
+    @PreAuthorize("#userId == authentication.principal.userId OR hasAuthority('ROLE_ADMIN')")
+    List<TestDtoResponse> getTestsByUser(@RequestParam("userId") Integer userId) {
         var tests = testService.getAllTestsByUser(userId);
         return tests.stream()
                 .map(testMapper::mapToDto)
@@ -54,8 +60,9 @@ public class TestController {
     }
 
     @PutMapping("/{id}")
-    TestDtoResponse submitTest(@PathVariable int id, @RequestBody @Valid TestDtoRequest testDtoRequest) {
-        var test = testService.submitTest(id, testDtoRequest);
-        return testMapper.mapToDto(test);
+    @PreAuthorize("#testDtoRequest.userId == authentication.principal.userId OR hasAuthority('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void submitTest(@PathVariable int id, @RequestBody @Valid TestDtoRequest testDtoRequest) {
+        testService.submitTest(id, testDtoRequest);
     }
 }

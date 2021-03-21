@@ -15,6 +15,7 @@ public class TestDtoRequest {
     @NotEmpty
     @NotBlank
     private String description;
+    private int userId;
     @NotEmpty
     private List<QuestionDtoRequest> questionDtoRequests;
 }

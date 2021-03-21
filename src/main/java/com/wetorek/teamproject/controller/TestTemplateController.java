@@ -7,6 +7,7 @@ import com.wetorek.teamproject.service.TestTemplateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/test-templates")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 class TestTemplateController {
     private final TestTemplateService testTemplateService;
     private final TestTemplateMapper mapstructTestTemplateMapper;

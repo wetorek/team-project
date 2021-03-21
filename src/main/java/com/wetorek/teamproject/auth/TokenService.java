@@ -1,25 +1,27 @@
 package com.wetorek.teamproject.auth;
 
+import com.wetorek.teamproject.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 @Service
 class TokenService {
-
     private final SecretKey secretKey = Keys.secretKeyFor(HS512);
-
     @Value("${security.jwt.token.expire-length:3600000}")
     private final long validityInMilliseconds = 3600000; // 1h
 
@@ -27,8 +29,12 @@ class TokenService {
         return getAllClaimsFromToken(token).getSubject();
     }
 
-    String generateNewToken(UserDetails userDetails) {
-        Map<String, Object> claims = Map.of(); // e.g. roles
+    String generateNewToken(UserDetails userDetails, List<Role> roles) {
+        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
+        claims.put("auth", roles.stream()
+                .filter(Objects::nonNull)
+                .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
+                .collect(Collectors.toList()));
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())

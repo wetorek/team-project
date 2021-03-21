@@ -15,6 +15,7 @@ public class TestTemplateFactory {
 //        var testTemplate = testTemplateMapper.mapRequestToEntity(request);
         var testTemplate = templateMapper.mapRequestToEntity(request);
         //changes here associated with user
+//        testTemplate.setUser();
         return testTemplate;
     }
 }

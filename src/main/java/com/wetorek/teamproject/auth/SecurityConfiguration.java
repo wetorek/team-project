@@ -1,9 +1,11 @@
 package com.wetorek.teamproject.auth;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,12 +21,13 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import java.util.Set;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true
+)
+@AllArgsConstructor
 class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenService tokenService;
-
-    SecurityConfiguration(TokenService tokenService) {
-        this.tokenService = tokenService;
-    }
+    private final CustomUserDetailsService userDetailsService;
 
     @Autowired
     void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,18 +52,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                new User(
-                        "user",
-                        passwordEncoder().encode("user"),
-                        Set.of()
-                ),
-                new User(
-                        "admin",
-                        passwordEncoder().encode("admin"),
-                        Set.of(new SimpleGrantedAuthority("ADMIN"))
-                )
-        );
+        return userDetailsService;
     }
 
     @Bean
