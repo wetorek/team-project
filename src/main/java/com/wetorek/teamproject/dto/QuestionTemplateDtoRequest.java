@@ -8,8 +8,7 @@ import java.util.Set;
 
 @Data
 public class QuestionTemplateDtoRequest {
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Question is mandatory")
     private String question;
     private int maxPoints;
     private int correctAnswers;

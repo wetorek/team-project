@@ -2,14 +2,14 @@ package com.wetorek.teamproject.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 @Data
 public class OptionDtoRequest {
+    @Min(1)
     private int id;
-    @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Answer text is mandatory")
     private String answerText;
     private boolean marked;
 }

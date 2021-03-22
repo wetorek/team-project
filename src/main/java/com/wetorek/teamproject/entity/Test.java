@@ -11,8 +11,6 @@ import java.util.Set;
 @Data
 @Builder
 public class Test {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "test", fetch = FetchType.EAGER)
-    private Set<Question> questions;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -26,11 +24,15 @@ public class Test {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User examinedUser;
+
     @ManyToOne
     @JoinColumn(name = "test_template_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private TestTemplate testTemplate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "test", fetch = FetchType.EAGER)
+    private Set<Question> questions;
 
     @PersistenceConstructor
     public Test() {

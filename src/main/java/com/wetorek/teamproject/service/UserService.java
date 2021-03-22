@@ -18,12 +18,12 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public Optional<User> getCurrentUser(){
+    public Optional<User> getCurrentUser() {
         var username = ((AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userRepository.findUserByUsername(username);
     }
 
-    public Optional<User> getUserById (int id){
+    public Optional<User> getUserById(int id) {
         return userRepository.findById(id);
     }
 }
