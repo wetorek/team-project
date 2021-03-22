@@ -24,18 +24,20 @@ public class TestService {
     private final TestFactory testFactory;
     private final TestTemplateService testTemplateService;
     private final List<Subscriber> subscribers;
+    private final UserService userService;
 
-    public TestService(TestRepository testRepository, TestFactory testFactory, TestTemplateService testTemplateService, Subscriber... subscribers) {
+    public TestService(TestRepository testRepository, TestFactory testFactory, TestTemplateService testTemplateService, UserService userService, Subscriber... subscribers) {
         this.testRepository = testRepository;
         this.testFactory = testFactory;
         this.testTemplateService = testTemplateService;
+        this.userService = userService;
         this.subscribers = Arrays.asList(subscribers);
     }
 
     public Test createTest(int assignedUserId, int testTemplateId) {
         var testTemplate = testTemplateService.getById(testTemplateId).orElseThrow(() -> new IllegalArgumentException("Test template not found"));
-        //TODO user change
-        User assignedUser = null;
+        User assignedUser = userService.getUserById(assignedUserId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         var test = testFactory.from(testTemplate, assignedUser);
         var result = testRepository.save(test);
         log.info("Test was created: " + test.getId());
@@ -52,7 +54,7 @@ public class TestService {
 
     public Test submitTest(int id, TestDtoRequest testDtoRequest) {
         var test = testRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Test not found"));
-        if (test.getExaminedUser().getId() != testDtoRequest.getUserId()){
+        if (test.getExaminedUser().getId() != testDtoRequest.getUserId()) {
             throw new IllegalArgumentException("User id do not match");
         }
         if (test.isSubmitted()) {
