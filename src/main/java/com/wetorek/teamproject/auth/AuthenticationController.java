@@ -33,11 +33,11 @@ class AuthenticationController {
                         authRequest.getPassword()
                 )
         );
-        var user = (UserDetails) auth.getPrincipal();
+        var user = (AuthenticatedUser) auth.getPrincipal();
         var roles = userService.findUserByUsername(user.getUsername())
                 .map(User::getRoles)
                 .orElseThrow(() -> new UsernameNotFoundException("User: " + user.getUsername() + " not found"));
-        return ResponseEntity.ok(new AuthenticationResponseDto(tokenService.generateNewToken(user, roles)));
+        return ResponseEntity.ok(new AuthenticationResponseDto(tokenService.generateNewToken(user, roles), user.getUserId()));
     }
 
     @PostMapping("/register")
