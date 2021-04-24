@@ -1,4 +1,4 @@
-package com.wetorek.teamproject.service;
+package com.wetorek.teamproject.auth;
 
 import com.wetorek.teamproject.dto.UserRegisterDto;
 import com.wetorek.teamproject.entity.Role;

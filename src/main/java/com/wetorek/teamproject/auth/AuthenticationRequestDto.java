@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-class AuthenticationRequestDto {
+public class AuthenticationRequestDto {
     @NotEmpty(message = "Username is mandatory")
     private String username;
     @NotEmpty(message = "Password is mandatory")

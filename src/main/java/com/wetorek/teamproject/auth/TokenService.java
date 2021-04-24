@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 @Service
-class TokenService {
+public class TokenService {
     private final SecretKey secretKey = Keys.secretKeyFor(HS512);
     @Value("${security.jwt.token.expire-length:3600000}")
     private final long validityInMilliseconds = 3600000; // 1h
