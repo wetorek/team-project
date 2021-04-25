@@ -3,6 +3,7 @@ package com.wetorek.teamproject.controller;
 import com.wetorek.teamproject.exceptions.ErrorResponse;
 import com.wetorek.teamproject.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,5 +58,16 @@ public class RestExceptionAdvice {
                         (m, v) -> m.put(((FieldError) v).getField(), v.getDefaultMessage()),
                         HashMap::putAll
                 );
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    ErrorResponse handleBadLogin() {
+        return ErrorResponse.builder()
+                .errorCode("Authentication error")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .timestamp(LocalDateTime.now())
+                .errorMessage("Bad credentials given")
+                .build();
     }
 }
