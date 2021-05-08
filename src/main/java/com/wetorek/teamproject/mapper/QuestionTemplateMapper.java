@@ -24,7 +24,6 @@ public interface QuestionTemplateMapper {
 
 
     @Mappings({
-//        @Mapping(target = "options", source = "optionTemplateDto")
     })
     Set<QuestionTemplate> mapQuestionDtoRequestSetToEntity(Collection<QuestionTemplateDtoRequest> requests);
 

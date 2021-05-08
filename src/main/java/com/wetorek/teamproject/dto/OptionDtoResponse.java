@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class OptionDtoResponse {
     private int id;
-    @NotEmpty
     @NotBlank
     private String answerText;
     private boolean marked;

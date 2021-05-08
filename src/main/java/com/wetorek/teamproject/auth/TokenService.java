@@ -36,6 +36,7 @@ public class TokenService {
                 .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                 .collect(Collectors.toList()));
         return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))

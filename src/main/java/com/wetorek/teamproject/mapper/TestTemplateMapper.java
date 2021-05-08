@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {QuestionTemplateMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface TestTemplateMapper {
     @Mappings({
-            @Mapping(target = "creator", source = "user.id", defaultValue = "userID"),
+            @Mapping(target = "creator", source = "user.id"),
             @Mapping(target = "questionTemplateDtoResponses", source = "questionTemplates")
     })
     TestTemplateDtoResponse mapToDto(TestTemplate testTemplate);

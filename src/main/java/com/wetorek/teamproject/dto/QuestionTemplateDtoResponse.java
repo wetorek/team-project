@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 public class QuestionTemplateDtoResponse {
     private int id;
-    @NotEmpty
     @NotBlank
     private String question;
     private int maxPoints;

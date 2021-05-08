@@ -11,8 +11,9 @@ import org.mapstruct.Mappings;
 public interface TestMapper {
 
     @Mappings({
-            @Mapping(target = "examinedUserId", source = "examinedUser.id", defaultValue = "12"),
-            @Mapping(target = "testTemplateId", source = "testTemplate.id", defaultValue = "12"),
+            @Mapping(target = "examinedUserId", source = "examinedUser.id"),
+            @Mapping(target = "examinedUserUsername", source = "examinedUser.username"),
+            @Mapping(target = "testTemplateId", source = "testTemplate.id"),
             @Mapping(target = "questionDtoResponseList", source = "questions")
     })
     TestDtoResponse mapToDto(Test test);

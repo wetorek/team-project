@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class OptionTemplateDtoResponse {
     private int id;
-    @NotEmpty
     @NotBlank
     private String answerText;
     private boolean correct;
