@@ -44,6 +44,14 @@ public class TestService {
         return result;
     }
 
+    public List<Test> createTestsForUsers(int testTemplateId, List<String> usernames) {
+        return usernames.stream()
+                .map(userService::findUserByUsername)
+                .flatMap(Optional::stream)
+                .map(user -> createTest(user.getId(), testTemplateId))
+                .collect(Collectors.toList());
+    }
+
     public List<Test> getAllTestsByUser(int userId) {
         return testRepository.findTestByExaminedUser_Id(userId);
     }

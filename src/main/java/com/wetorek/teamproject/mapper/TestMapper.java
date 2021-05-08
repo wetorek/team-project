@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {QuestionMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface TestMapper {
 
@@ -18,4 +20,5 @@ public interface TestMapper {
     })
     TestDtoResponse mapToDto(Test test);
 
+    List<TestDtoResponse> mapListToDto(List<Test> tests);
 }

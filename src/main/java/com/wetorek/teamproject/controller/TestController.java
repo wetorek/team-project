@@ -32,6 +32,14 @@ public class TestController {
         return ResponseEntity.created(URI.create("/" + testDto.getId())).body(testDto);
     }
 
+    @PostMapping("/createForUsers")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    List<TestDtoResponse> createTestsForUsers(@RequestParam int templateId, @RequestBody List<String> usernames) {
+        var tests = testService.createTestsForUsers(templateId, usernames);
+        return testMapper.mapListToDto(tests);
+    }
+
     @GetMapping("/{id}")
     @PostAuthorize("(returnObject.statusCode.value() == 404) OR (returnObject.body.examinedUserId == authentication.principal.userId) OR hasAuthority('ROLE_ADMIN')")
     ResponseEntity<TestDtoResponse> getTestById(@PathVariable int id) {
